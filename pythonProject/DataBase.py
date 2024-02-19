@@ -1,29 +1,53 @@
 class Student:
-    def __init__(self, name, age, grade):
-        self.name = name
-        self.age = age
-        self.grade = grade
+    def __init__(self):
+        self.students = []
 
-    def __str__(self):
-        return f"hello {self.name} your age is {self.age} and you are in grade {self.grade}"
+    def add_student(self, name, age, grade):
+        student = {'name': name, 'age': age, 'grade': grade}
+        self.students.append(student)
+        return "Student added successfully."
 
-    def add_stuent(self):
-        pass
+    def view_students(self): 
+        return self.students
 
-    def view_stuents(self):
-        pass
+    def search_student(self, key): 
+        for student in self.students:
+            if key in student.values():
+                print("Student found.")
+                return student
+        return "Student not found."
 
-    def search_student(self):
-        pass
+    def update_student(self, key, **kwargs):
+        for student in self.students:
+            if key in student.values():
+                student.update(kwargs)
+                return "Student details updated successfully."
+        return "Student not found."
 
-    def update_stuent(self):
-        pass
-
-    def delete_stuent(self):
-        pass
+    def delete_student(self, key):
+        for student in self.students:
+            if key in student.values():
+                self.students.remove(student)
+                return "Student removed successfully."
+            else:
+                return "Student not found."
 
     def save_to_file(self):
         pass
 
     def load_from_file(self):
         pass
+
+db = Student()
+
+db.add_student("John", 20, "A")
+db.add_student("Alice", 21, "B")
+print(db.view_students())
+
+print(db.search_student("John"))
+
+print(db.update_student("Alice", age=22))
+print(db.view_students())
+
+print(db.delete_student("John"))
+print(db.view_students())
