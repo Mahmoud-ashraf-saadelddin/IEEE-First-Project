@@ -1,16 +1,22 @@
+import csv
+
+ID_creator = 1
 class Student:
     def __init__(self):
         self.students = []
 
     def add_student(self, name, age, grade):
-        student = {'name': name, 'age': age, 'grade': grade}
+        global ID_creator
+        student = {'ID' : ID_creator, 'name': name, 'age': age, 'grade': grade}
         self.students.append(student)
+        ID_creator+=1
         return "Student added successfully."
 
-    def view_students(self): 
-        return self.students
+    def view_students(self):
+        for k in self.students:
+            print(k)
 
-    def search_student(self, key): 
+    def search_student(self, key):
         for student in self.students:
             if key in student.values():
                 print("Student found.")
@@ -32,22 +38,24 @@ class Student:
             else:
                 return "Student not found."
 
-    def save_to_file(self):
-        pass
+    def save_to_file(self, filename="student_db.csv"):
+        # open a file to write
+        with open(filename, 'w') as file:
+            fieldnames = ['ID', 'name', 'age', 'grade']
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
 
-    def load_from_file(self):
-        pass
+            writer.writeheader()
+            writer.writerows(self.students)
 
-db = Student()
+        return "Data saved to file successfully."
 
-db.add_student("John", 20, "A")
-db.add_student("Alice", 21, "B")
-print(db.view_students())
+    def load_from_file(self, filename="student_db.csv"):
+        try:
+            with open(filename, 'r') as file:
+                reader = csv.DictReader(file)
+                for line in reader:
+                    print(line)
 
-print(db.search_student("John"))
-
-print(db.update_student("Alice", age=22))
-print(db.view_students())
-
-print(db.delete_student("John"))
-print(db.view_students())
+            return "Data loaded from file successfully."
+        except FileNotFoundError:
+            return "File not found. No data loaded."
