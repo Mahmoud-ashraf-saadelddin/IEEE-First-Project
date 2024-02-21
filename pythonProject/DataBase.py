@@ -1,6 +1,9 @@
 import csv
 
 ID_creator = 1
+ids = []
+
+
 class Student:
     def __init__(self):
         self.students = []
@@ -17,6 +20,7 @@ class Student:
 
             student = {'ID': ID_creator, 'name': name, 'age': age, 'grade': grade}
             self.students.append(student)
+            ids.append(ID_creator)
             ID_creator += 1
             return "Student added successfully."
         except ValueError as e:
