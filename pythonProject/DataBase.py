@@ -7,21 +7,40 @@ class Student:
 
     def add_student(self, name, age, grade):
         global ID_creator
-        student = {'ID' : ID_creator, 'name': name, 'age': age, 'grade': grade}
-        self.students.append(student)
-        ID_creator+=1
-        return "Student added successfully."
+        try:
+            if not isinstance(name, str) or not isinstance(age, int) or not isinstance(grade, str):
+                raise ValueError(
+                    "Invalid input types. Name should be a string, age should be an integer, and grade should be a string.")
+
+            if age < 0:
+                raise ValueError("Age cannot be negative.")
+
+            student = {'ID': ID_creator, 'name': name, 'age': age, 'grade': grade}
+            self.students.append(student)
+            ID_creator += 1
+            return "Student added successfully."
+        except ValueError as e:
+            return str(e)
 
     def view_students(self):
-        for k in self.students:
-            print(k)
+        try:
+            if not self.students:
+                raise ValueError("No students to display.")
+
+            for student in self.students:
+                print(student)
+        except ValueError as e:
+            print(str(e))
 
     def search_student(self, key):
-        for student in self.students:
-            if key in student.values():
-                print("Student found.")
-                return student
-        return "Student not found."
+        try:
+            for student in self.students:
+                if key in student.values():
+                    print("Student found.")
+                    return student
+            return "Student not found."
+        except Exception as e:
+            return f"An error occurred during student search: {str(e)}"
 
     def update_student(self, key, **kwargs):
         for student in self.students:
